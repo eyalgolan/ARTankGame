@@ -67,8 +67,15 @@ public class PlaceOnPlane : MonoBehaviour
             // Raycast hits are sorted by distance, so the first one
             // will be the closest hit.
             var hitPose = s_Hits[0].pose;
-            spawnedObject = Instantiate(m_PlacedPrefab, hitPose.position, hitPose.rotation);
-
+            Pose planePose = new Pose();
+            if (spawnedObject == null)
+            {
+                spawnedObject = Instantiate(m_PlacedPrefab, hitPose.position, hitPose.rotation);
+            }
+            else
+            {
+                spawnedObject.transform.position = hitPose.position;
+            }
         }
     }
 
