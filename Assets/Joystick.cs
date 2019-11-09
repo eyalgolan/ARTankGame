@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,6 +7,7 @@ namespace UnityStandardAssets.CrossPlatformInput
 {
 	public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 	{
+
 		public enum AxisOption
 		{
 			// Options for which axes to use
@@ -18,7 +20,7 @@ namespace UnityStandardAssets.CrossPlatformInput
 		public AxisOption axesToUse = AxisOption.Both; // The options for the axes that the still will use
 		public string horizontalAxisName = "Horizontal"; // The name given to the horizontal axis for the cross platform input
 		public string verticalAxisName = "Vertical"; // The name given to the vertical axis for the cross platform input
-
+        public AudioSource drivingTank;
 		Vector3 m_StartPos;
 		bool m_UseX; // Toggle for using the x axis
 		bool m_UseY; // Toggle for using the Y axis
@@ -27,7 +29,8 @@ namespace UnityStandardAssets.CrossPlatformInput
 
 		void OnEnable()
 		{
-			CreateVirtualAxes();
+
+            CreateVirtualAxes();
 		}
 
         void Start()
@@ -74,8 +77,8 @@ namespace UnityStandardAssets.CrossPlatformInput
 		public void OnDrag(PointerEventData data)
 		{
 			Vector3 newPos = Vector3.zero;
-
-			if (m_UseX)
+            drivingTank.Play();
+            if (m_UseX)
 			{
 				int delta = (int)(data.position.x - m_StartPos.x);
 				delta = Mathf.Clamp(delta, - MovementRange, MovementRange);
@@ -95,17 +98,19 @@ namespace UnityStandardAssets.CrossPlatformInput
 
 		public void OnPointerUp(PointerEventData data)
 		{
-			transform.position = m_StartPos;
+            transform.position = m_StartPos;
 			UpdateVirtualAxes(m_StartPos);
-		}
+            StartCoroutine(FadeOut(drivingTank, 0.11f));
+        }
 
 
 		public void OnPointerDown(PointerEventData data) { }
 
 		void OnDisable()
 		{
-			// remove the joysticks from the cross platform input
-			if (m_UseX)
+            
+            // remove the joysticks from the cross platform input
+            if (m_UseX)
 			{
 				m_HorizontalVirtualAxis.Remove();
 			}
@@ -113,6 +118,21 @@ namespace UnityStandardAssets.CrossPlatformInput
 			{
 				m_VerticalVirtualAxis.Remove();
 			}
-		}
-	}
+            
+        }
+        public static IEnumerator FadeOut(AudioSource audioSource, float FadeTime)
+        {
+            float startVolume = audioSource.volume;
+
+            while (audioSource.volume > 0)
+            {
+                audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+
+                yield return null;
+            }
+
+            audioSource.Stop();
+            audioSource.volume = startVolume;
+        }
+    }
 }

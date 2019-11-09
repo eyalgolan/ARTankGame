@@ -23,7 +23,7 @@ public class Turret : MonoBehaviour
     {
         speed = 2f;
         playersTag = "Player";
-        InvokeRepeating("UpdateTarget",0f,1f);
+        InvokeRepeating("UpdateTarget",13f,1f);
     }
     void UpdateTarget()
     {
@@ -74,7 +74,7 @@ public class Turret : MonoBehaviour
         
     }
 
-    void Shoot()
+    public void Shoot()
     {
         GameObject bulletGO = (GameObject)Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         GameObject planeStage = GameObject.Find("Ground Plane Stage");
