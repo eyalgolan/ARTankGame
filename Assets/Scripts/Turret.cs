@@ -23,7 +23,7 @@ public class Turret : MonoBehaviour
     {
         speed = 2f;
         playersTag = "Player";
-        InvokeRepeating("UpdateTarget",13f,1f);
+        InvokeRepeating("UpdateTarget",13f,5f);
     }
     void UpdateTarget()
     {
