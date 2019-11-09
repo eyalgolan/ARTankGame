@@ -113,12 +113,36 @@ public class Bullet : MonoBehaviour
     }
     void OnCollisionEnter(Collision other)
     {
+        hit = other.gameObject;
+        Debug.Log("bullet trigger with " + other.gameObject.name);
+        if (other.gameObject.name.Equals(objectToIgnore) || other.gameObject.tag == "Wall")
+        {
+            Physics.IgnoreCollision(other.collider, GetComponent<Collider>());
+            return;
+        }
+        if (other.gameObject.tag == "Floor")
+        {
+            Collider cc = gameObject.GetComponent<Collider>();
+            cc.isTrigger = false;
+        }
+        if (other.gameObject.tag == "Player")
+        {
+            Collider cc = gameObject.GetComponent<Collider>();
+            cc.isTrigger = false;
+            Damage(other.transform);
+        }
+        Explode();
+        Destroy(gameObject);
+        return;
+        /* 
         Debug.Log("bullet collision enter");
         Explode();
+        Physics.IgnoreCollision(other.collider, GetComponent<Collider>());
         if (other.gameObject.Equals(objectToIgnore)){
             Physics.IgnoreCollision(other.collider, GetComponent<Collider>());
             return;
         }
+        */
     }
     void Damage(Transform player)
     {
