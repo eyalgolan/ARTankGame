@@ -11,6 +11,8 @@ public class PlayerDamage : MonoBehaviour
     public GameObject controller;
     public AudioDeath audioDeath;
     public Image healthBar;
+    public Score Playerscore;
+    public Score EnemyScore;
 
     // Start is called before the first frame update
     void Start()
@@ -18,10 +20,15 @@ public class PlayerDamage : MonoBehaviour
    
         health = startHealth;
     }
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, bool toScore)
     {
         health -= amount;
         healthBar.fillAmount = health / startHealth;
+        if (toScore)
+        {
+            Playerscore.AddToScore((int)(-amount / 5));
+            EnemyScore.AddToScore((int)amount);
+        }
         if (health <= 0)
         {
             Die();

@@ -13,6 +13,7 @@ public class Bullet : MonoBehaviour
     public LongClickButton buttonTimer;
     GameObject hit;
     public GameObject soundPrefab;
+    public Score score;
 
     [Header("measures")]
     public float speed = 100f;
@@ -20,14 +21,39 @@ public class Bullet : MonoBehaviour
     public float force;
     public float radius = 1f;
     public float explosionForce = 10f;
+    public bool toScore;
 
     public void Seek(Transform tmpTarget)
     {
         target = tmpTarget;
     }
+    void setScoreObject()
+    {
+        if (objectToIgnore == null)
+        {
+            return;
+        }
+        if (objectToIgnore.Contains("1"))
+        {
+            GameObject tmp = GameObject.Find("Score1");
+            if (tmp != null)
+            {
+                score = tmp.GetComponent<Score>();
+            }
+        }
+        else if (objectToIgnore.Contains("2"))
+        {
+            GameObject tmp = GameObject.Find("Score2");
+            if (tmp != null)
+            {
+                score = tmp.GetComponent<Score>();
+            }
+        }
+    }
     void Awake()
     {
-        
+        //setScoreObject();
+
     }
     // Start is called before the first frame update
     public void Start()
@@ -91,7 +117,7 @@ public class Bullet : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             Collider cc = gameObject.GetComponent<Collider>();
-            cc.isTrigger = false;
+            //cc.isTrigger = false;
             Damage(other.transform);
         }
         Explode();
@@ -113,36 +139,12 @@ public class Bullet : MonoBehaviour
     }
     void OnCollisionEnter(Collision other)
     {
-        hit = other.gameObject;
-        Debug.Log("bullet trigger with " + other.gameObject.name);
-        if (other.gameObject.name.Equals(objectToIgnore) || other.gameObject.tag == "Wall")
-        {
-            Physics.IgnoreCollision(other.collider, GetComponent<Collider>());
-            return;
-        }
-        if (other.gameObject.tag == "Floor")
-        {
-            Collider cc = gameObject.GetComponent<Collider>();
-            cc.isTrigger = false;
-        }
-        if (other.gameObject.tag == "Player")
-        {
-            Collider cc = gameObject.GetComponent<Collider>();
-            cc.isTrigger = false;
-            Damage(other.transform);
-        }
-        Explode();
-        Destroy(gameObject);
-        return;
-        /* 
         Debug.Log("bullet collision enter");
         Explode();
-        Physics.IgnoreCollision(other.collider, GetComponent<Collider>());
         if (other.gameObject.Equals(objectToIgnore)){
             Physics.IgnoreCollision(other.collider, GetComponent<Collider>());
             return;
         }
-        */
     }
     void Damage(Transform player)
     {
@@ -151,12 +153,16 @@ public class Bullet : MonoBehaviour
             Debug.Log("same object");
             return;
         }
+        if (score != null)
+        {
+            score.AddToScore(15);
+        }
         PlayerDamage pd = player.GetComponent<PlayerDamage>();
         if(pd == null)
         {
             return;
         }
-        pd.TakeDamage(damage);
+        pd.TakeDamage(damage, toScore);
         if(pd.health <= 0)
         {
             HitTarget();
@@ -185,11 +191,10 @@ public class Bullet : MonoBehaviour
             Rigidbody rigi = nearbyObject.GetComponent<Rigidbody>();
             if(rigi != null)
             {
-                rb.AddExplosionForce(explosionForce,transform.position,radius);
-                if(rigi.gameObject.tag == "Player")
+                if(rigi.gameObject.tag == "Player" && rigi.gameObject.name != objectToIgnore)
                 {
                     PlayerDamage pd = rigi.gameObject.GetComponent<PlayerDamage>();
-                    pd.TakeDamage(0.5f);
+                    pd.TakeDamage(1f, toScore);
                 }
             }
 

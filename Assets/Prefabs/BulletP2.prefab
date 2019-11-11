@@ -933,10 +933,12 @@ MonoBehaviour:
   buttonTimer: {fileID: 0}
   soundPrefab: {fileID: 311237189384663497, guid: bb4f7f1138d8b0d469822416acbfefe1,
     type: 3}
+  score: {fileID: 0}
   speed: 15
   force: 300
   radius: 5
   explosionForce: 700
+  toScore: 1
 --- !u!82 &395309153251375200
 AudioSource:
   m_ObjectHideFlags: 0

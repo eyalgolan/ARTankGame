@@ -12,6 +12,7 @@ public class Turret : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
     string playersTag = "Player";
+    public EndGame gameEnded;
 
     [Header("Attributes")]
     public float range = 2.5f;
@@ -21,12 +22,18 @@ public class Turret : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject tmp = GameObject.Find("EndGame");
+        if(tmp != null)
+        {
+            gameEnded = tmp.GetComponent<EndGame>();
+        }
         speed = 2f;
         playersTag = "Player";
-        InvokeRepeating("UpdateTarget",13f,5f);
+        InvokeRepeating("UpdateTarget",13f,4.5f);
     }
     void UpdateTarget()
     {
+
         GameObject[] players = GameObject.FindGameObjectsWithTag(playersTag);
         if(players.Length == 0)
         {
@@ -76,6 +83,10 @@ public class Turret : MonoBehaviour
 
     public void Shoot()
     {
+        if (gameEnded.ended)
+        {
+            return;
+        }
         GameObject bulletGO = (GameObject)Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         GameObject planeStage = GameObject.Find("Ground Plane Stage");
         if (planeStage != null)

@@ -934,10 +934,12 @@ MonoBehaviour:
     type: 3}
   soundPrefab: {fileID: 311237189384663497, guid: bb4f7f1138d8b0d469822416acbfefe1,
     type: 3}
+  score: {fileID: 0}
   speed: 10
   force: 300
   radius: 5
   explosionForce: 700
+  toScore: 1
 --- !u!82 &8239783020536824488
 AudioSource:
   m_ObjectHideFlags: 0
