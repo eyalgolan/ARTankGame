@@ -4,7 +4,7 @@ The game sets the playfield on a surface with 2 projectile tanks and 2 playable 
 The game also contains background music and sound effects when the tanks, shoot and explode.
 There is health bar just above each tank, indicating it’s current health level.
 
-*how to play:*
+## how to play:
 To start playing the game, point your camera to a plane – preferably a desk. A small white square will appear. Pressing on the square will place the playfield on the plane.
 In order to move a tank, press its movement toggle in the direction you wish to move it. 
 In order to shoot, press the fire toggle.
