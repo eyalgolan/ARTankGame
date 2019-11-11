@@ -9,4 +9,5 @@ To start playing the game, point your camera to a plane – preferably a desk. A
 In order to move a tank, press its movement toggle in the direction you wish to move it. 
 In order to shoot, press the fire toggle.
 
+## GamePlay:
 ![alt text](https://github.com/eyalgolan/ARTankGame/blob/master/img/Screenshot_20191111-215148_ARTankGame.jpg "Gameplay screenshot")
