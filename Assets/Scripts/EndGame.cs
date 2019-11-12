@@ -37,8 +37,8 @@ public class EndGame : MonoBehaviour
         {
             fireworks.SetActive(true);
             endCanvas.SetActive(true);
-            player1Score.gameObject.SetActive(false);
-            player2Score.gameObject.SetActive(false);
+            //player1Score.gameObject.SetActive(false);
+            //player2Score.gameObject.SetActive(false);
         }
         if (players.Length == 0)
         {
